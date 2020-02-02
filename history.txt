@@ -1,0 +1,30 @@
+sudo yum install -y dnsmasq
+sudo groupadd -r dnsmasq
+sudo useradd -r -g dnsmasq dnsmasq
+sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig
+sudo vim /etc/dnsmasq.conf
+# Server Configuration
+listen-address=127.0.0.1
+port=53
+bind-interfaces
+user=dnsmasq
+group=dnsmasq
+pid-file=/var/run/dnsmasq.pid
+
+# Name resolution options
+resolv-file=/etc/resolv.dnsmasq
+cache-size=1
+min-cache-ttl=1
+max-cache-ttl=1
+neg-ttl=60
+domain-needed
+bogus-priv
+
+sudo bash -c "echo 'nameserver 169.254.169.253' > /etc/resolv.dnsmasq"
+sudo systemctl restart dnsmasq.service
+sudo systemctl enable dnsmasq.service
+dig aws.amazon.com @127.0.0.1
+sudo bash -c "echo 'supersede domain-name-servers 127.0.0.1, 169.254.169.253;' >> /etc/dhcp/dhclient.conf"
+sudo dhclient
+dig aws.amazon.com
+
