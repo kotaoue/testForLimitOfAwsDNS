@@ -27,7 +27,7 @@ AWS DNSの名前解決制限に引っかかることがあると予想。
 - テスト詳細
   - https://aws.amazon.com/jp/premiumsupport/knowledge-center/dns-resolution-failures-ec2-linux/ の手順でインストール。
   /etc/dnsmasq.conf は以下のようにキャッシュ時間を1秒、キャッシュ数を1に変更。
-  ```
+  ```ShellSession
   # Server Configuration
   listen-address=127.0.0.1
   port=53
@@ -47,7 +47,7 @@ AWS DNSの名前解決制限に引っかかることがあると予想。
   ```
   - 確認方法 1については、dnsmasqのインストールで確認。
   - 確認方法 2については、以下のテストスクリプトを実行しつつパケットキャプチャを実行して確認。
-  ```
+  ```ShellSession
   #!/bin/bash
   while :
   do
@@ -62,7 +62,7 @@ AWS DNSの名前解決制限に引っかかることがあると予想。
   tcpdump -s 0 -i any port 53 -w single.pcap
   ```
   - 確認方法 3については、テストスクリプトを複数同時実行しつつパケットキャプチャを実行して確認。
-  ```
+  ```ShellSession
   # 1枚目のターミナルで
   sh test.sh
 
